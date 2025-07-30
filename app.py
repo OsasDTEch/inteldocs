@@ -54,8 +54,8 @@ with st.form("upload-form"):
             if os.path.exists(VECTORSTORE_DIR):
                 shutil.rmtree(VECTORSTORE_DIR)
 
-            db = Chroma.from_documents(chunks, embedding=embeddings, persist_directory=VECTORSTORE_DIR)
-            db.persist()
+            db = Chroma.from_documents(chunks, embedding=embeddings)
+            
             st.success("✅ Document processed successfully!")
         except Exception as e:
             st.error(f"❌ Failed to process file: {e}")
@@ -66,10 +66,10 @@ if os.path.exists(VECTORSTORE_DIR):
     if question:
         try:
             embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-            db = Chroma(persist_directory=VECTORSTORE_DIR, embedding_function=embeddings)
+            db = Chroma(embedding_function=embeddings)
 
             llm = ChatGroq(
-                model="gemma-7b-it",  # Smaller model than Mixtral
+                model="qwen/qwen3-32b",  # Smaller model than Mixtral
                 temperature=0.3,
                 api_key=GROQ_APIKEY,
             )
