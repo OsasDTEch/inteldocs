@@ -14,7 +14,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Config
-GROQ_APIKEY = os.getenv("GROQ_APIKEY")
+GROQ_APIKEY =st.secrets["GROQ_APIKEY"]
+
 if not GROQ_APIKEY:
     st.error("❌ GROQ_APIKEY is missing in .env file")
     st.stop()
