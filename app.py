@@ -10,14 +10,17 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
-from dotenv import load_dotenv
 
-load_dotenv()
+# Get secrets
+HUGGINGFACE_TOKEN = st.secrets.get("HUGGINGFACE_TOKEN")
+GROQ_APIKEY = st.secrets.get("GROQ_APIKEY")  # optional, if you also move Groq key to secrets
 
-# Config
-GROQ_APIKEY = os.getenv("GROQ_APIKEY")
 if not GROQ_APIKEY:
-    st.error("❌ GROQ_APIKEY is missing in .env file")
+    st.error("❌ GROQ_APIKEY is missing in st.secrets")
+    st.stop()
+
+if not HUGGINGFACE_TOKEN:
+    st.error("❌ Hugging Face token is missing in st.secrets")
     st.stop()
 
 st.set_page_config(page_title="IntelDocs 📄", layout="centered")
@@ -50,7 +53,10 @@ with st.form("upload-form"):
             splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
             chunks = splitter.split_documents(docs)
 
-            embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+            embeddings = HuggingFaceEmbeddings(
+                model_name="sentence-transformers/all-MiniLM-L6-v2",
+                huggingfacehub_api_token=HUGGINGFACE_TOKEN
+            )
             db = FAISS.from_documents(chunks, embedding=embeddings)
 
             with open(FAISS_INDEX_PATH, "wb") as f:
@@ -65,7 +71,10 @@ if os.path.exists(FAISS_INDEX_PATH):
     question = st.text_input("Ask something from your document:")
     if question:
         try:
-            embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+            embeddings = HuggingFaceEmbeddings(
+                model_name="sentence-transformers/all-MiniLM-L6-v2",
+                huggingfacehub_api_token=HUGGINGFACE_TOKEN
+            )
             with open(FAISS_INDEX_PATH, "rb") as f:
                 db = pickle.load(f)
 
