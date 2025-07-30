@@ -50,7 +50,7 @@ with st.form("upload-form"):
             splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
             chunks = splitter.split_documents(docs)
 
-            embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+            embeddings = HuggingFaceEmbeddings(model_name="intfloat/e5-small-v2")
             if os.path.exists(VECTORSTORE_DIR):
                 shutil.rmtree(VECTORSTORE_DIR)
 
