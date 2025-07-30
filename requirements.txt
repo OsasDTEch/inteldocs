@@ -7,10 +7,7 @@ chromadb
 PyMuPDF
 uvicorn
 fastapi
-sentence-transformers
 pysqlite3-binary
 faiss-cpu
-faiss
-streamlit
-pymupdf
+
 huggingface-hub
