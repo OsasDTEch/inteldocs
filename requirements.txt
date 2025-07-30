@@ -8,3 +8,4 @@ PyMuPDF
 uvicorn
 fastapi
 sentence-transformers
+pysqlite3-binary
