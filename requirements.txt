@@ -11,3 +11,6 @@ sentence-transformers
 pysqlite3-binary
 faiss-cpu
 faiss
+streamlit
+pymupdf
+huggingface-hub
