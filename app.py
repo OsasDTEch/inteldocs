@@ -53,10 +53,7 @@ with st.form("upload-form"):
             splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
             chunks = splitter.split_documents(docs)
 
-            embeddings = HuggingFaceEmbeddings(
-                model_name="sentence-transformers/all-MiniLM-L6-v2",
-                huggingfacehub_api_token=HUGGINGFACE_TOKEN
-            )
+            embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
             db = FAISS.from_documents(chunks, embedding=embeddings)
 
             with open(FAISS_INDEX_PATH, "wb") as f:
