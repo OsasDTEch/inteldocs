@@ -9,5 +9,4 @@ uvicorn
 fastapi
 pysqlite3-binary
 faiss-cpu
-
-huggingface-hub
+sentence-transformers
