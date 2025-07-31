@@ -69,8 +69,7 @@ if os.path.exists(FAISS_INDEX_PATH):
     if question:
         try:
             embeddings = HuggingFaceEmbeddings(
-                model_name="sentence-transformers/all-MiniLM-L6-v2",
-                huggingfacehub_api_token=HUGGINGFACE_TOKEN
+                model_name="sentence-transformers/all-MiniLM-L6-v2"
             )
             with open(FAISS_INDEX_PATH, "rb") as f:
                 db = pickle.load(f)
