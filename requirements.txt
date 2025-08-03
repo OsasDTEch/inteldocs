@@ -10,3 +10,4 @@ fastapi
 pysqlite3-binary
 faiss-cpu
 sentence-transformers
+lamgchain-google-genai
