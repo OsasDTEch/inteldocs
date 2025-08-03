@@ -10,10 +10,13 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Get secrets
 HUGGINGFACE_TOKEN = st.secrets.get("HUGGINGFACE_TOKEN")
-GROQ_APIKEY = st.secrets.get("GROQ_APIKEY")  # optional, if you also move Groq key to secrets
+GROQ_APIKEY = st.secrets.get("GROQ_APIKEY")
+
+# optional, if you also move Groq key to secrets
 
 if not GROQ_APIKEY:
     st.error("❌ GROQ_APIKEY is missing in st.secrets")
@@ -74,12 +77,7 @@ if os.path.exists(FAISS_INDEX_PATH):
             with open(FAISS_INDEX_PATH, "rb") as f:
                 db = pickle.load(f)
 
-            llm = ChatGroq(
-                model="qwen/qwen3-32b",
-                temperature=0.3,
-                api_key=GROQ_APIKEY,
-                reasoning_format="parsed"
-            )
+            llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
 
             qa = RetrievalQA.from_chain_type(llm=llm, retriever=db.as_retriever())
             answer = qa.run(question)
@@ -88,3 +86,4 @@ if os.path.exists(FAISS_INDEX_PATH):
             st.write(answer)
         except Exception as e:
             st.error(f"❌ Failed to generate answer: {e}")
+
